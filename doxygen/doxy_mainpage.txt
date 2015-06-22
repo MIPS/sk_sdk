@@ -1,0 +1,70 @@
+/** @mainpage SecureKernel SDK Main Page
+*
+* This document provides an API definition for the SecureKernel SDK.
+*
+* The SecureKernel SDK is split into several key APIs that target the two major developer roles who would
+* use this SDK.  The application developer and the BSP developer.
+*
+* Application Developers
+* ======================
+*
+* Application developers will need to write both the normal and secure world components.  The normal world side
+* will use the TEEC (Trusted Execution Environment Client) API while the secure side interfaces with the
+* TAPP (Trusted Application) API.
+*
+* Normal World TEEC API
+* ---------------------
+*
+* The TEEC API provides functionality for the normal world client application to open connections to the secure world
+* and submit pull requests to process (or retrieve) data.  Typical TEEC applications begin with a call to
+* SKTEEC_OpenContext() to open a context handle to the secure world server that services that context.  Multiple
+* trusted applications can be behind a given server so context identifiers may be global constants.
+*
+* After opening a context the client will open a session handle with the SKTEEC_OpenSession() function to communicate
+* with a session of a specific trusted application using a TAID (Trusted Application IDentifier) that is platform
+* specific.  Every trusted application has their own unique TAID.
+*
+* Once a session is established the client can submit pull requests via the SKTEEC_InvokeCommand() function which
+* will transmit an application specific command and a memory reference array (SKTEEC_Operation), await the reply, and
+* then return to the client with the output in the memory pointed to by the memory reference array.
+*
+* Secure World Trusted Application API
+* ------------------------------------
+*
+* Trusted Applications interface with the SecureKernel SDK via calls to the sk_swld_platform_tapp_*() functions.  Some of
+* the functions will be implemented by the BSP developer but ideally there will be some variant of sk_swld_platform_tapp_pull() that
+* the application developer will implement as the entry point to the secure application.  This function receives the command identifier
+* and memory reference array (sk_operation in this case) that was sent from the normal world application.
+*
+* BSP Developers
+* ==============
+*
+* Normal World Platform Drivers
+* -----------------------------
+*
+* The normal world platform drivers are responsible for implementing the functions sk_nwld_platform_*() that communicate pull requests
+* from the normal world to the secure world and back.
+*
+* The sk_nwld_platform_comm_register() function will be called by the TEEC API when registering an open context.  This function should then
+* open the appropriate tunnel to the SWLD for the given context identifier (and sm_id).  It can use the opaque pointer in the sk_nwld_teec_comm structure
+* to store relevant data structures for the connection.
+*
+* The sk_nwld_platform_comm_proc() function will be called when a client issues requests (including opening a context, session, invoking a command, etc).
+* It is responsible for making sure the contents of the buffers make it to the other side (and back again).  Either via buffering or appropriate memory
+* registration (shared memory).
+*
+* Secure World Platform Drivers
+* -----------------------------
+*
+* The secure world platform drivers are responsible for connecting the SK SDK to the trusted applications via the sk_swld_platform_tapp_*() functions.
+*
+* The function sk_swld_platform_tapp_load() will be called to load an application found matching a TAID given by an SKTEEC_OpenSession() call from the client.
+* That function is responsible for loading the application (and launching it) and can store per-tapp relevant data in the sk_swld_tapp_instance structure's opaque void
+* pointer.
+*
+* The function sk_swld_platform_tapp_init() is called the first time the trusted application is used and is responsible for getting the application ready to operate.
+*
+* The function sk_swld_platform_tapp_pull() is called to perform a pull request as initiated by the SKTEEC_InvokeCommand() call.
+*
+*/
+

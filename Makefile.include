@@ -1,0 +1,12 @@
+MAKE_VERBOSE ?= 0
+MAKE_VERBOSE_0=@
+MAKE_VERBOSE_1=
+MAKE_VERBOSE_STR=${MAKE_VERBOSE_${MAKE_VERBOSE}}
+
+CWD=$(shell pwd)
+export CWD
+
+%.o: %.c
+	@if [ ${MAKE_VERBOSE} = 0 ]; then echo "  # ${CC} ${CWD}/$^"; fi 
+	${MAKE_VERBOSE_STR} ${CC} ${CFLAGS} -c $^ -o $@
+

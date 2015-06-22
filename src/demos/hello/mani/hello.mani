@@ -1,0 +1,60 @@
+///////////////////////////////////////////////////////////////////////////////
+//
+//
+// Proprietary Information of Elliptic Technologies
+// Copyright (C) 2001-2014, all rights reserved
+// Elliptic Technologies, Inc.
+//
+// As part of our confidentiality  agreement, Elliptic Technologies and
+// the Company, as  a  Receiving Party, of  this  information  agrees to
+// keep strictly  confidential  all Proprietary Information  so received
+// from Elliptic Technologies. Such Proprietary Information can be used
+// solely for  the  purpose  of evaluating  and/or conducting a proposed
+// business  relationship  or  transaction  between  the  parties.  Each
+// Party  agrees  that  any  and  all  Proprietary  Information  is  and
+// shall remain confidential and the property of Elliptic Technologies.
+// The  Company  may  not  use  any of  the  Proprietary  Information of
+// Elliptic Technologies for any purpose other  than  the  above-stated
+// purpose  without the prior written consent of Elliptic Technologies.
+//
+// This information is further subject to the terms and conditions of
+// the HDCP license agreement.
+//-----------------------------------------------------------------------
+//
+// The following file is used to configure the manifest for the 
+// hello world application
+//
+//////////////////////////////////////////////////////////////////////////////
+
+// 16 bytes (hexidecimal string)
+[TAID]
+12 01 02 03 04 05 06 07
+08 09 0a 0b 0c 0d 0e 0f
+
+// 1 byte:
+[MULTI_INSTANCE]
+1
+
+// 1 byte:
+[MULTI_SESSION]
+1
+
+// 4 bytes:
+[MAX_HEAP_SIZE]
+128
+
+// 4 bytes:
+[MAX_STACK_SIZE]
+128
+
+// String:
+[SERVICE_NAME]
+Elliptic Secure Kernel Applicaton
+
+// String:
+[VENDOR_NAME]
+Elliptic Technologies
+
+// String:
+[DECRIPTION]
+Hello World

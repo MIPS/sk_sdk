@@ -1,0 +1,39 @@
+ifeq (${TARGET},fiasco)
+   CC=mips-linux-gnu-gcc
+   AR=mips-linux-gnu-ar
+   LD=mips-linux-gnu-ld
+   ARFLAGS      =  rs
+   CFLAGS      += -DSK_TARGET_FIASCO -EL -Os
+   CFLAGS_SWLD += -msoft-float
+   CFLAGS_NWLD += -static
+endif
+
+ifeq (${TARGET},tcp)
+   CC=i686-unknown-linux-gnu-gcc
+   AR=i686-unknown-linux-gnu-ar
+   LD=i686-unknown-linux-gnu-ld
+   ARFLAGS      =  rs
+   CFLAGS      += -DSK_TARGET_TCP -Os
+endif
+
+ifdef SK_NO_LOG
+   CFLAGS += -DSYSV_NO_LOG
+endif
+
+ifdef SK_SCANBUILD_TARGET
+   TARGET=${SK_SCANBUILD_TARGET}
+endif
+
+NWLD_CC ?= ${CC}
+SWLD_CC ?= ${CC}
+
+export CC
+export NWLD_CC
+export SWLD_CC
+export AR
+export ARFLAGS
+export LD
+export CFLAGS
+export CFLAGS_SWLD
+export CFLAGS_NWLD
+
